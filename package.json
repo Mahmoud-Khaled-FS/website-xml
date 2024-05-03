@@ -1,0 +1,32 @@
+{
+  "name": "website-xml",
+  "version": "0.0.1",
+  "description": "node.js lib for store website static data and settings in xml file",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahmoud-Khaled-FS/website-xml.git"
+  },
+  "keywords": [
+    "xml"
+  ],
+  "author": "Mahmoud Khaled",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mahmoud-Khaled-FS/website-xml/issues"
+  },
+  "homepage": "https://github.com/Mahmoud-Khaled-FS/website-xml#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.8",
+    "@types/xml2js": "^0.4.14",
+    "tsx": "^4.9.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "xml2js": "^0.6.2"
+  }
+}
