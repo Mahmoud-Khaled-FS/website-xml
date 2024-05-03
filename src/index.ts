@@ -6,6 +6,7 @@ type XMLSchema = Record<string, XMLSchemaOptions>;
 
 type XMLSchemaOptions = {
   content: string | number;
+  groups?: string[];
 };
 
 class WebsiteXML {
@@ -30,6 +31,9 @@ class WebsiteXML {
     const xmlBuilderContent: any = {};
     for (const key in this.schema) {
       xmlBuilderContent[key] = { $: { type: typeof this.schema[key].content }, _: this.schema[key].content };
+      if (this.schema[key].groups) {
+        xmlBuilderContent[key].$.groups = this.schema[key].groups.join(' ');
+      }
     }
     return { website: xmlBuilderContent };
   }
@@ -48,6 +52,7 @@ class WebsiteXML {
       }
       schema[key] = {
         content: value,
+        groups: websiteData[key][0].$.groups?.split(' ') ?? [],
       };
     }
     return schema;
@@ -57,10 +62,16 @@ class WebsiteXML {
     return this.schema[key]?.content;
   }
 
-  all() {
+  all(groups?: string) {
     const data: Record<string, any> = {};
     for (const k in this.schema) {
-      data[k] = this.schema[k].content;
+      let isInGroup: boolean = true;
+      if (groups) {
+        isInGroup = this.schema[k].groups?.includes(groups) ?? false;
+      }
+      if (isInGroup) {
+        data[k] = this.schema[k].content;
+      }
     }
     return data;
   }
@@ -71,6 +82,7 @@ class WebsiteXML {
   const schema = {
     AboutUs: {
       content: 'hello world',
+      groups: ['admin'],
     },
     Privace: {
       content: 10,
@@ -79,5 +91,5 @@ class WebsiteXML {
   await w.init(schema);
   console.log(schema);
   console.log(w.schema);
-  console.log(w.all());
+  console.log(w.all('admin'));
 })();
