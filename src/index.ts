@@ -30,9 +30,12 @@ class WebsiteXML {
   private schemaToXMLBuilder() {
     const xmlBuilderContent: any = {};
     for (const key in this.schema) {
-      xmlBuilderContent[key] = { $: { type: typeof this.schema[key].content }, _: this.schema[key].content };
+      xmlBuilderContent[key] = {
+        [this.xmlHandler.attributeFiled]: { type: typeof this.schema[key].content },
+        [this.xmlHandler.contentKey]: this.schema[key].content,
+      };
       if (this.schema[key].groups) {
-        xmlBuilderContent[key].$.groups = this.schema[key].groups.join(' ');
+        xmlBuilderContent[key][this.xmlHandler.attributeFiled].groups = this.schema[key].groups.join(' ');
       }
     }
     return { website: xmlBuilderContent };
@@ -46,13 +49,13 @@ class WebsiteXML {
     const schema: XMLSchema = {};
     const websiteData = xml['website'];
     for (const key in websiteData) {
-      let value: string | number = websiteData[key][0]._;
-      if (websiteData[key][0].$.type === 'number') {
+      let value: string | number = websiteData[key][0][this.xmlHandler.contentKey];
+      if (websiteData[key][0][this.xmlHandler.attributeFiled].type === 'number') {
         value = parseInt(value as string);
       }
       schema[key] = {
         content: value,
-        groups: websiteData[key][0].$.groups?.split(' ') ?? [],
+        groups: websiteData[key][0][this.xmlHandler.attributeFiled].groups?.split(' ') ?? [],
       };
     }
     return schema;
